@@ -31,7 +31,8 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".EventosActivity"></activity>
+        <activity android:name=".EventosActivity" />
+        <activity android:name=".CrearGrupoActivity"></activity>
     </application>
 
 </manifest>
