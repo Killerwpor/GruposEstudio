@@ -26,11 +26,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".PerfilActivity" />
-        <activity android:name=".GrupoActivity"></activity>
+        <activity android:name=".GrupoActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EventosActivity"></activity>
     </application>
 
 </manifest>
