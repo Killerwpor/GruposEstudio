@@ -130,22 +130,6 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
-                <Switch
-                    android:id="@+id/switch1"
-                    style="@android:style/Widget.Holo.Light.CompoundButton.Switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:showText="true"
-                    android:splitTrack="false"
-                    android:switchTextAppearance="@style/TextAppearance.AppCompat"
-                    android:text="Asistiré"
-                    android:textAlignment="viewEnd"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:textOff="No"
-                    android:textOn="Sí"
-                    tools:checked="true" />
             </LinearLayout>
 
         </LinearLayout>

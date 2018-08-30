@@ -86,16 +86,16 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent (getApplicationContext(), PerfilActivity.class);
             startActivityForResult(intent, 0);
         } else if (id == R.id.nav_gallery) {
-
+            Intent intent = new Intent (getApplicationContext(), SolicitudesActivity.class);
+            startActivityForResult(intent, 0);
         } else if (id == R.id.nav_slideshow) {
-
+            Intent intent = new Intent (getApplicationContext(),EventosActivity.class);
+            startActivityForResult(intent, 0);
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
         }
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
