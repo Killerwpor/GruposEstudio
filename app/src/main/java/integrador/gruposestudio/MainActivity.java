@@ -1,9 +1,11 @@
 package integrador.gruposestudio;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +15,42 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+       private FirebaseUser usuario;
+        TextView nombreUsuario,correoUsuario;
+        ImageView foto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        nombreUsuario=headerView.findViewById(R.id.nombreUsuario);
+        correoUsuario=headerView.findViewById(R.id.correoUsuario);
+        foto=headerView.findViewById(R.id.fotoPerfil);
+
+
         setSupportActionBar(toolbar);
+
+        //comprueba si hay una sesión iniciada y actualiza la interfaz grafica con los datos de usuario
+       if(getIntent().getExtras().get("Usuario")!=null)
+        usuario=(FirebaseUser)getIntent().getExtras().get("Usuario"); //esta linea puede dar error con el login de Google por ahora
+        if (usuario != null) {
+        actualizarIU();
+        } else {
+            // si entra aqui es porque no hay sesión abierta
+        }
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -36,12 +64,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        drawer.addDrawerListener(toggle);        toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -91,8 +121,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent (getApplicationContext(),EventosActivity.class);
             startActivityForResult(intent, 0);
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_view) {
+            Intent intent = new Intent (getApplicationContext(),GrupoActivity.class);
+            startActivityForResult(intent, 0);
         }
 
 
@@ -101,4 +132,24 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    //actualiza la IU de acuerdo a su nombre, correo e imagen de perfil.
+    public void actualizarIU(){
+        String nombre,correo;
+        Uri photoUrl = usuario.getPhotoUrl();
+        Uri foto=usuario.getPhotoUrl();
+
+        nombre=usuario.getDisplayName();
+        correo=usuario.getEmail();
+        nombreUsuario.setText(nombre);
+        correoUsuario.setText(correo);
+
+        Log.d("FOTO", "Uri " +foto);
+        //fotoPerfil.setImageURI(photoUrl);
+    }
+
+
+
+
+
 }

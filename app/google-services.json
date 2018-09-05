@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "308259133197",
+    "firebase_url": "https://gruposestudio-1535412423130.firebaseio.com",
+    "project_id": "gruposestudio-1535412423130",
+    "storage_bucket": "gruposestudio-1535412423130.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308259133197:android:9bd5078354e2565f",
+        "android_client_info": {
+          "package_name": "integrador.gruposestudio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308259133197-l6213jlco5peq8goblivbfi26limqvmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6F_gJDQUVYHB_qaxCPdnhxrvKp9hD2e0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
