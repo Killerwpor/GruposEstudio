@@ -51,7 +51,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         SignInButton botonGoogle=findViewById(R.id.botonGoogle);
         LoginButton botonFacebook=findViewById(R.id.botonFacebook);
-        Button boton=findViewById(R.id.button4);
         botonFacebook.setReadPermissions("email", "public_profile");
         mAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
@@ -90,13 +89,6 @@ signIn();
         });
 
 
-boton.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent (getApplicationContext(),MainActivity.class);
-        startActivityForResult(intent, 0);
-    }
-});
 
 
 
