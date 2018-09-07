@@ -18,14 +18,17 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
        private FirebaseUser usuario;
-        TextView nombreUsuario,correoUsuario;
-        ImageView foto;
+       private TextView nombreUsuario,correoUsuario;
+private        ImageView foto;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -41,15 +44,14 @@ public class MainActivity extends AppCompatActivity
 
 
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
 
-        //comprueba si hay una sesión iniciada y actualiza la interfaz grafica con los datos de usuario
-       if(getIntent().getExtras().get("Usuario")!=null)
-        usuario=(FirebaseUser)getIntent().getExtras().get("Usuario"); //esta linea puede dar error con el login de Google por ahora
-        if (usuario != null) {
-        actualizarIU();
-        } else {
-            // si entra aqui es porque no hay sesión abierta
-        }
+
+//comprueba si hay alguna sesion activa y si la hay actualiza la interfaz grafica de acuerdo al usuario
+       usuario= mAuth.getCurrentUser();
+        if(usuario!=null)
+            actualizarIU();
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -125,10 +127,18 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent (getApplicationContext(),GrupoActivity.class);
             startActivityForResult(intent, 0);
         }
+     else if (id == R.id.nav_manage) {
+            FirebaseAuth.getInstance().signOut();
+            Intent intent = new Intent (getApplicationContext(),LoginActivity.class);
+            startActivityForResult(intent, 0);
+            finish();
+    }
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -136,20 +146,25 @@ public class MainActivity extends AppCompatActivity
     //actualiza la IU de acuerdo a su nombre, correo e imagen de perfil.
     public void actualizarIU(){
         String nombre,correo;
-        Uri photoUrl = usuario.getPhotoUrl();
-        Uri foto=usuario.getPhotoUrl();
+        Uri fotoU=usuario.getPhotoUrl();
 
         nombre=usuario.getDisplayName();
         correo=usuario.getEmail();
         nombreUsuario.setText(nombre);
         correoUsuario.setText(correo);
 
-        Log.d("FOTO", "Uri " +foto);
-        //fotoPerfil.setImageURI(photoUrl);
+        Log.d("FOTO", "Uri " +fotoU);
+        Glide.with(getApplicationContext())
+                .load(fotoU)
+                .into(foto);
+
+        //foto.setImageURI(fotoU);
+    }
+
     }
 
 
 
 
 
-}
+
