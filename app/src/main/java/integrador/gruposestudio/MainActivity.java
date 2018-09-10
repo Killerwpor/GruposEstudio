@@ -22,6 +22,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity
        private TextView nombreUsuario,correoUsuario;
 private        ImageView foto;
     private FirebaseAuth mAuth;
+private FirebaseDatabase database = FirebaseDatabase.getInstance();
+private DatabaseReference myRef;
 
 
     @Override
@@ -42,15 +47,34 @@ private        ImageView foto;
         correoUsuario=headerView.findViewById(R.id.correoUsuario);
         foto=headerView.findViewById(R.id.fotoPerfil);
 
-
         setSupportActionBar(toolbar);
         mAuth = FirebaseAuth.getInstance();
+
+        myRef = database.getReference();
+        /*
+        myRef.setValue("Carlita");
+        myRef = database.getReference("Personas/cedula");
+        myRef.setValue("2");
+
+
+        myRef.child("Personas").child("nombre").setValue("Saris");
+        */
+
+
+
 
 
 //comprueba si hay alguna sesion activa y si la hay actualiza la interfaz grafica de acuerdo al usuario
        usuario= mAuth.getCurrentUser();
         if(usuario!=null)
             actualizarIU();
+
+
+        // Obtener el ID unico de usuario
+        UserInfo informacionUsuario=usuario;
+        String id=informacionUsuario.getUid();
+
+      //  Log.d("IDENTIFICADOR","ID: "+id);
 
 
 

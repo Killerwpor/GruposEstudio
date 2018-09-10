@@ -164,7 +164,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat" />
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/botonChat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

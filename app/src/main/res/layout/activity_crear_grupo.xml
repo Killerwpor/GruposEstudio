@@ -68,7 +68,7 @@
                     android:textAppearance="@style/TextAppearance.AppCompat" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/nombreGrupo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.6"
@@ -151,7 +151,7 @@
             android:orientation="vertical">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/botonCrear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -33,7 +33,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".EventosActivity" />
         <activity android:name=".CrearGrupoActivity" />
-        <activity android:name=".SolicitudesActivity"></activity>
+        <activity android:name=".SolicitudesActivity" />
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>
