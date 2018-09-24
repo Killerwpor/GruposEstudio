@@ -5,14 +5,15 @@ public class Chat {
     private String autor;
     private String fecha;
 
-    public Chat(){
-
-    }
 
     public Chat(String m, String a, String f){
 this.mensaje=m;
 this.autor=a;
 this.fecha=f;
+    }
+
+    public Chat(){ //se necesita este constructor vacio para Firebase
+
     }
 
     public String getMensaje() {

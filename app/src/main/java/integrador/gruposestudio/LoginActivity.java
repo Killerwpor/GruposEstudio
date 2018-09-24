@@ -6,15 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -31,26 +28,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import java.util.Arrays;
-
-import bolts.Task;
+import integrador.gruposestudio.Remote.RetrofitHelper;
+import integrador.gruposestudio.modelo.Usuario;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager callbackManager;
     private static final String EMAIL = "email";
     private FirebaseAuth mAuth;
-  private  GoogleSignInClient mGoogleSignInClient;
-    private static final int OUR_REQUEST_CODE = 49404; //???
+    private GoogleSignInClient mGoogleSignInClient;
 
+    private static final int OUR_REQUEST_CODE = 49404; //???
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        SignInButton botonGoogle=findViewById(R.id.botonGoogle);
-        LoginButton botonFacebook=findViewById(R.id.botonFacebook);
+        SignInButton botonGoogle = findViewById(R.id.botonGoogle);
+        LoginButton botonFacebook = findViewById(R.id.botonFacebook);
         botonFacebook.setReadPermissions("email", "public_profile");
         mAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
@@ -59,16 +58,16 @@ public class LoginActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
-botonGoogle.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-signIn();
-    }
-});
+        botonGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                signIn();
+            }
+        });
 
-     botonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        botonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
 
@@ -84,17 +83,9 @@ signIn();
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                Log.d("LOGINAPP", "error: " + exception);
             }
         });
-
-
-
-
-
-
-
-
 
 
     }
@@ -143,9 +134,6 @@ signIn();
     }
 
 
-
-
-
     private void handleFacebookAccessToken(AccessToken token) {
 
 
@@ -158,8 +146,10 @@ signIn();
                         //Si es satisfactorio el login con Facebook entra por aqui
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                            registrarNuevoUsuario();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivityForResult(intent, 0);
+                            finish();
 
 
                         } else { //Si NO es satisfactorio el login con Facebook entra por aqui
@@ -174,8 +164,6 @@ signIn();
                     }
 
 
-
-
                 });
     }
 
@@ -188,18 +176,20 @@ signIn();
                     @Override
                     public void onComplete(@NonNull com.google.android.gms.tasks.Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            //Si es satisfactorio el login con Facebook entra por aqui
+                            //Si es satisfactorio el login con Google entra por aqui
+                            registrarNuevoUsuario();
                             Log.d("TAG", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent (getApplicationContext(),MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             startActivityForResult(intent, 0);
+                            finish();
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             //Log.w(TAG, "signInWithCredential:failure", task.getException());
-                          //  Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
-                                    //Toast.LENGTH_SHORT).show();
-                          //  updateUI(null);
+                            //  Toast.makeText(GoogleSignInActivity.this, "Authentication failed.",
+                            //Toast.LENGTH_SHORT).show();
+                            //  updateUI(null);
                         }
 
                         // ...
@@ -211,7 +201,26 @@ signIn();
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent,OUR_REQUEST_CODE); //??????????
+        startActivityForResult(signInIntent, OUR_REQUEST_CODE); //??????????
     }
 
+    private void registrarNuevoUsuario() { //se registra el usuario la primera vez que se loguea
+        FirebaseUser user = mAuth.getCurrentUser();
+        RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+        Usuario userAux = new Usuario(user.getDisplayName(),user.getEmail(), user.getUid());
+        service.guardarUsuario(userAux).enqueue(new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                Log.d("GUARDARUSUARIO","mensaje: "+response.message());
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("GUARDARUSUARIO","mensaje: "+t);
+            }
+        });
+
+    }
 }
+

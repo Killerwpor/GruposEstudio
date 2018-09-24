@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,7 +18,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import integrador.gruposestudio.modelo.Chat;
+import integrador.gruposestudio.modelo.adaptadorChat;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -30,28 +34,27 @@ public class ChatActivity extends AppCompatActivity {
     private Chat chat;
     private TextView mensajei, mensajef;
     private ValueEventListener mPostListener;
-
+    private ArrayList<Chat> chatArray;
+    private ListView lv;
+    private adaptadorChat adaptador;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        enviar=findViewById(R.id.botonEnviar);
+        enviar = findViewById(R.id.botonEnviar);
         mensaje=findViewById(R.id.campoMensaje);
-        mensajei=findViewById(R.id.mensaje1);
-        mensajef=findViewById(R.id.mensaje2);
+        lv = findViewById(R.id.listaChat);
         mAuth = FirebaseAuth.getInstance();
-        usuario= mAuth.getCurrentUser();
+        usuario = mAuth.getCurrentUser();
+        chatArray=new ArrayList<Chat>();
 
-        enviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                enviarMensaje();
-            }
-        });
-
-
+enviar.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        enviarMensaje();
     }
-
+});
+    }
     protected void onStart() {
         super.onStart();
         myRef = database.getReference();
@@ -62,8 +65,7 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI
-                Chat chatAux = dataSnapshot.getValue(Chat.class);
-                mensajei.setText(usuario.getDisplayName()+": "+chatAux.getMensaje());
+                    Chat chatAux = dataSnapshot.getValue(Chat.class);
                 //og.d("CHAT", "Mensaje: " + chatAux.getMensaje());
             }
 
@@ -74,21 +76,22 @@ public class ChatActivity extends AppCompatActivity {
                 // ...
             }
         });
-
-
     }
 
 
 
     private void enviarMensaje() {
+
         myRef = database.getReference();
         UserInfo informacionUsuario = usuario;
         String id = informacionUsuario.getUid();
         String mensajeChat=mensaje.getText().toString();
-        chat=new Chat(mensajeChat,id,"Fecha");
-        myRef.child(id).setValue(chat);
-
-
+        chat=new Chat(mensajeChat,informacionUsuario.getDisplayName()+":","Fecha");
+        chatArray.add(chat);
+        adaptador = new adaptadorChat(getApplicationContext(), chatArray);
+        //Log.d("LISTA", "elementos: "+chatArray.get(0).getAutor());
+       myRef.child(id).setValue(chat);
+        lv.setAdapter(adaptador);
     }
 
 

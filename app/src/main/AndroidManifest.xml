@@ -3,6 +3,7 @@
     package="integrador.gruposestudio">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,13 +25,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".PerfilActivity" />
         <activity android:name=".GrupoActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
         <activity android:name=".EventosActivity" />
         <activity android:name=".CrearGrupoActivity" />
         <activity android:name=".SolicitudesActivity" />
