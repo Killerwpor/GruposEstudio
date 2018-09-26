@@ -16,6 +16,7 @@ import integrador.gruposestudio.Remote.RetrofitHelper;
 import integrador.gruposestudio.modelo.Grupo;
 import integrador.gruposestudio.modelo.GrupoList;
 import integrador.gruposestudio.modelo.Solicitud;
+import integrador.gruposestudio.modelo.Usuario;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,6 +62,7 @@ public class adaptadorSolicitudes extends BaseAdapter {
 
 
          final TextView nombreGrupo=view.findViewById(R.id.nombreGrupo2);
+         final TextView nombreUsuario=view.findViewById(R.id.nombreUsuario2);
 
          final RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
 
@@ -71,7 +73,18 @@ public class adaptadorSolicitudes extends BaseAdapter {
                service.getNombreGrupo(item.getGroupId()).enqueue(new Callback<Grupo>() {
                    @Override
                    public void onResponse(Call<Grupo> call, Response<Grupo> response) {
-                       nombreGrupo.setText(response.body().getGroupName()); //Se demora mucho, pensar como reducir el tiempo
+                       nombreGrupo.setText("Grupo: "+response.body().getGroupName()); //Se demora mucho, pensar como reducir el tiempo
+                       service.getNombreUsuario(item.getUserUid()).enqueue(new Callback<Usuario>() {
+                           @Override
+                           public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                               nombreUsuario.setText("Por: "+response.body().getName());
+                           }
+
+                           @Override
+                           public void onFailure(Call<Usuario> call, Throwable t) {
+
+                           }
+                       });
                    }
 
                    @Override

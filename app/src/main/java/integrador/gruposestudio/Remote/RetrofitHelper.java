@@ -43,8 +43,11 @@ public class RetrofitHelper {
         @GET("/group_requests/{group_id}")
         Call<SolicitudList> getSolicitudesGrupo(@Path ("group_id") int idGrupo);
 
-        @GET("group_name/{group_id}")
+        @GET("/group_name/{group_id}") //le puse un slash depronto se daña
         Call<Grupo> getNombreGrupo(@Path ("group_id") int idGrupo);
+
+        @GET("/users/{user_uid}")
+        Call<Usuario> getNombreUsuario(@Path ("user_uid") String idUsuario);
 
         @Headers("Content-type: application/json")
         @POST("/register_group")

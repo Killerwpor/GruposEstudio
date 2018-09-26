@@ -1,8 +1,11 @@
 package integrador.gruposestudio;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +43,18 @@ public class SolicitudesActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         usuario = mAuth.getCurrentUser();
         listaSolicitudes = new ArrayList<>();
+
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Solicitud s= (Solicitud) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(getApplicationContext(), AceptarORechazarActivity.class);
+                intent.putExtra("Grupo", s.getGroupId());
+                intent.putExtra("id", s.getUserUid());
+                startActivityForResult(intent, 0);
+
+            }
+        });
 
 
         final RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
@@ -79,15 +94,19 @@ public class SolicitudesActivity extends AppCompatActivity {
 
         List<Solicitud> list = new ArrayList<>();
         final RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+
         for (int i = 0; i < lista.size(); i++) {
+
             service.getSolicitudesGrupo(lista.get(i).getGroupId()).enqueue(new Callback<SolicitudList>() {
 
                 @Override
                 public void onResponse(Call<SolicitudList> call, Response<SolicitudList> response) {
 
                     //Aquí se guardan todas las solicitudes del usuario en la listaSolicitudes
-                    listaSolicitudes.addAll(response.body().getSolicitudes());
-                    llenarListView();
+                    if(!response.message().equals("NOT FOUND")) { //Si no encuentra solicitudes no entra aquí para que no haya errores con nulos
+                        listaSolicitudes.addAll(response.body().getSolicitudes());
+                        llenarListView();
+                    }
 
                 }
 

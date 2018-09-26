@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -70,7 +71,8 @@ public class CrearGrupoActivity extends AppCompatActivity {
         service.guardarGrupo(grupo).enqueue(new Callback<Grupo>() {
             @Override
             public void onResponse(Call<Grupo> call, Response<Grupo> response) {
-
+                Toast.makeText(getApplicationContext(), "Grupo creado",  Toast.LENGTH_LONG).show();
+                finish();
             }
 
             @Override

@@ -33,7 +33,6 @@ public class SolicitarPermisoActivity extends Activity {
                     RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
                 String idUsuario = getIntent().getStringExtra("id");
                 int idGrupo = getIntent().getIntExtra("Grupo",-1);
-                Log.d("VALOR","idUsuario "+idUsuario+" idGrupo "+idGrupo);
                     service.enviarSolicitud(idUsuario,idGrupo).enqueue(new Callback<Solicitud>() {
                         @Override
                         public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {

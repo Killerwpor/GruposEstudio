@@ -4,13 +4,26 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/nombreUsuario2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
+        android:text="Cargando"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:id="@+id/nombreGrupo2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
-        android:text="TextView"
+        android:text="Cargando"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold" />
