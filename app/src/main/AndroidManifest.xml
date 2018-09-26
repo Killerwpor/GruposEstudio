@@ -19,27 +19,28 @@
         <activity
             android:name=".LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity android:name=".PerfilActivity" />
         <activity android:name=".GrupoActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".EventosActivity" />
         <activity android:name=".CrearGrupoActivity" />
         <activity android:name=".SolicitudesActivity" />
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".SolicitarPermisoActivity"
+            android:theme="@android:style/Theme.Dialog" >
+
+
+        </activity>
     </application>
 
 </manifest>

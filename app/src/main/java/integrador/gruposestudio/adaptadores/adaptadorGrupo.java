@@ -1,6 +1,7 @@
-package integrador.gruposestudio.modelo;
+package integrador.gruposestudio.adaptadores;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import integrador.gruposestudio.R;
+import integrador.gruposestudio.Remote.RetrofitHelper;
+import integrador.gruposestudio.modelo.Grupo;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class adaptadorGrupo extends BaseAdapter{
     List<Grupo> items;
@@ -48,7 +54,6 @@ public class adaptadorGrupo extends BaseAdapter{
         TextView nombreGrupo=view.findViewById(R.id.nombreGrupo);
 
 
-
         nombreGrupo.setText(item.getGroupName());
 
 
@@ -68,9 +73,5 @@ public class adaptadorGrupo extends BaseAdapter{
         }
     }
 
-    class Holder {
-        //Propiedades
-        TextView nombre, mensaje, fecha;
 
-    }
 }

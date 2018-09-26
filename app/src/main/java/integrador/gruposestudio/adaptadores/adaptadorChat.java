@@ -1,4 +1,4 @@
-package integrador.gruposestudio.modelo;
+package integrador.gruposestudio.adaptadores;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import integrador.gruposestudio.R;
+import integrador.gruposestudio.modelo.Chat;
 
 public class adaptadorChat extends BaseAdapter {
 

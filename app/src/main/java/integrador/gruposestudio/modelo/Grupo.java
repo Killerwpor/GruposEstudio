@@ -22,7 +22,7 @@ public class Grupo {
     private String adminUid;
     @SerializedName("members")
     @Expose
-    private List<String> members;
+    private List<Usuario> members;
     @SerializedName("events")
     @Expose
     private List<Object> events = null;
@@ -67,11 +67,11 @@ public class Grupo {
         this.adminUid = adminUid;
     }
 
-    public List<String> getMembers() {
+    public List<Usuario> getMembers() {
         return members;
     }
 
-    public void setMembers(List<String> members) {
+    public void setMembers(List<Usuario> members) {
         this.members = members;
     }
 

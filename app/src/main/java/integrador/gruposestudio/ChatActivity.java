@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import integrador.gruposestudio.modelo.Chat;
-import integrador.gruposestudio.modelo.adaptadorChat;
+import integrador.gruposestudio.adaptadores.adaptadorChat;
 
 public class ChatActivity extends AppCompatActivity {
 
