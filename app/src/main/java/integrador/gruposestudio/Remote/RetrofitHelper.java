@@ -10,6 +10,7 @@ import integrador.gruposestudio.modelo.GrupoList;
 import integrador.gruposestudio.modelo.Solicitud;
 import integrador.gruposestudio.modelo.SolicitudList;
 import integrador.gruposestudio.modelo.Usuario;
+import integrador.gruposestudio.modelo.UsuarioList;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -39,6 +40,9 @@ public class RetrofitHelper {
     public interface GetDataService { //aquí se crean todas las peticiones
         @GET("/groups")
         Call<GrupoList> getAllGrupos();
+
+        @GET("group_users/{group_id}")
+        Call<UsuarioList> getMiembros(@Path ("group_id") int idGrupo);
 
         @GET("/group_requests/{group_id}")
         Call<SolicitudList> getSolicitudesGrupo(@Path ("group_id") int idGrupo);

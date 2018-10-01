@@ -1,5 +1,6 @@
 package integrador.gruposestudio;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,19 +44,18 @@ public class CrearGrupoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_grupo);
-        nombreGrupo=findViewById(R.id.campoNombreGrupo);
-        guardar=findViewById(R.id.botonCrear);
+        nombreGrupo = findViewById(R.id.campoNombreGrupo);
+        guardar = findViewById(R.id.botonCrear);
         mAuth = FirebaseAuth.getInstance();
-        usuario= mAuth.getCurrentUser();
+        usuario = mAuth.getCurrentUser();
         myRef = database.getReference();
         UserInfo informacionUsuario = usuario;
-
 
 
         guardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fecha=new Date();
+                fecha = new Date();
                 guardarNuevoGrupo();
             }
         });
@@ -65,14 +65,13 @@ public class CrearGrupoActivity extends AppCompatActivity {
 
     private void guardarNuevoGrupo() {
         DateFormat Formato = new SimpleDateFormat("dd/mm/yyyy");
-        String fechaActual=Formato.format(fecha).toString();
-       Grupo grupo=new Grupo(nombreGrupo.getText().toString(),fechaActual,usuario.getUid());
+        String fechaActual = Formato.format(fecha).toString();
+        Grupo grupo = new Grupo(nombreGrupo.getText().toString(), fechaActual, usuario.getUid());
         RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
         service.guardarGrupo(grupo).enqueue(new Callback<Grupo>() {
             @Override
             public void onResponse(Call<Grupo> call, Response<Grupo> response) {
-                Toast.makeText(getApplicationContext(), "Grupo creado",  Toast.LENGTH_LONG).show();
-                finish();
+                Toast.makeText(getApplicationContext(), "Grupo creado", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -85,8 +84,8 @@ public class CrearGrupoActivity extends AppCompatActivity {
         service.getAllGrupos().enqueue(new Callback<GrupoList>() {
             @Override
             public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
-                grupos=response.body();
-                meterAlAdministrador(grupos.getGrupos());
+                grupos = response.body();
+                meterAlAdministrador2(grupos.getGrupos());
             }
 
             @Override
@@ -95,25 +94,29 @@ public class CrearGrupoActivity extends AppCompatActivity {
             }
         });
 
-
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
 
     }
 
     //Este metodo se hace para que cuando cree un grupo él mismo se agregue como miembro automaticamente
-    public void meterAlAdministrador(List<Grupo> g){
+    public void meterAlAdministrador(List<Grupo> g) {
         final RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
-final List<Grupo> gAux=g;
-        for(int i=0;i<g.size();i++){
-            if(g.get(i).getAdminUid().equals(usuario.getUid())){
-                final int k=i;
-                service.enviarSolicitud(usuario.getUid(),g.get(i).getGroupId()).enqueue(new Callback<Solicitud>() { //Aquí se envía la solicitud
+        final List<Grupo> gAux = g;
+        for (int i = 0; i < gAux.size(); i++) {
+            final int k = i;
+            if (g.get(i).getAdminUid().equals(usuario.getUid()) && k == gAux.size() - 1) {
+
+                service.enviarSolicitud(usuario.getUid(), gAux.get(i).getGroupId() + 1).enqueue(new Callback<Solicitud>() { //Aquí se envía la solicitud
                     @Override
                     public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
-                        Solicitud solicitud=new Solicitud(usuario.getUid(),gAux.get(k).getGroupId());
+                        Log.d("ENTRO,", "usuario " + usuario.getUid() + " grupodid " + gAux.get(k).getGroupId());
+/*
+                     Solicitud solicitud=new Solicitud(usuario.getUid(),gAux.get(k).getGroupId());
                         service.aceptarSolicitud(solicitud).enqueue(new Callback<Solicitud>() { //Aquí se acepta la solicitud
                             @Override
                             public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
-
+                                Log.d("ENTRO,","mensaje: "+  response.message());
                             }
 
                             @Override
@@ -121,6 +124,7 @@ final List<Grupo> gAux=g;
 
                             }
                         });
+ */
                     }
 
                     @Override
@@ -128,7 +132,40 @@ final List<Grupo> gAux=g;
 
                     }
                 });
+
             }
+
         }
+    }
+
+    public void meterAlAdministrador2(List<Grupo> g) {
+     RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+       int numero=g.get(g.size()-1).getGroupId();
+        Log.d("RESPUESTASOLICITUD","numero: "+numero);
+         service.enviarSolicitud(usuario.getUid(),numero).enqueue(new Callback<Solicitud>() {
+             @Override
+             public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                 Log.d("RESPUESTASOLICITUD","mensaje: "+response.message());
+
+             }
+
+             @Override
+             public void onFailure(Call<Solicitud> call, Throwable t) {
+
+             }
+         });
+         Solicitud s=new Solicitud(usuario.getUid(),numero);
+service.aceptarSolicitud(s).enqueue(new Callback<Solicitud>() {
+    @Override
+    public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+        Log.d("RESPUESTASOLICITUD","mensaje aceptado: "+response.message());
+    }
+
+    @Override
+    public void onFailure(Call<Solicitud> call, Throwable t) {
+
+    }
+});
+
     }
 }

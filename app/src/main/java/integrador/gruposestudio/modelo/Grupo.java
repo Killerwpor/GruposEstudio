@@ -20,9 +20,6 @@ public class Grupo {
     @SerializedName("admin_uid")
     @Expose
     private String adminUid;
-    @SerializedName("members")
-    @Expose
-    private List<Usuario> members;
     @SerializedName("events")
     @Expose
     private List<Object> events = null;
@@ -65,14 +62,6 @@ public class Grupo {
 
     public void setAdminUid(String adminUid) {
         this.adminUid = adminUid;
-    }
-
-    public List<Usuario> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Usuario> members) {
-        this.members = members;
     }
 
     public List<Object> getEvents() {

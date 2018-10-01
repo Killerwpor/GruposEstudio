@@ -36,6 +36,7 @@ import integrador.gruposestudio.modelo.GrupoList;
 import integrador.gruposestudio.Remote.RetrofitHelper;
 import integrador.gruposestudio.modelo.Usuario;
 import integrador.gruposestudio.adaptadores.adaptadorGrupo;
+import integrador.gruposestudio.modelo.UsuarioList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,30 +72,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        //Se comprueba si el miembro pertenece a un grupo, si no pertenece da la opción de unirse.
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Grupo g = (Grupo) adapterView.getItemAtPosition(i);
-                Boolean pertenece=comprobarSiPerteneceAlGrupo(g.getMembers());
-                if(pertenece){
-                    Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
-                    intent.putExtra("Grupo", g.getGroupId());
-                    startActivityForResult(intent, 0);
-                }
-                else{
-                    Intent intent = new Intent(getApplicationContext(), SolicitarPermisoActivity.class);
-                    intent.putExtra("Grupo", g.getGroupId());
-                    intent.putExtra("id", usuario.getUid());
-                    startActivityForResult(intent, 0);
-                }
 
-
-
-            }
-
-
-        });
 
 
         //comprueba si hay alguna sesion activa y si la hay actualiza la interfaz grafica de acuerdo al usuario
@@ -114,6 +92,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CrearGrupoActivity.class);
                 startActivityForResult(intent, 0);
+                finish();
             }
         });
 
@@ -135,10 +114,9 @@ public class MainActivity extends AppCompatActivity
         RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
         Call<GrupoList> call = service.getAllGrupos();
         call.enqueue(new Callback<GrupoList>() {
-
-
             @Override
             public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
+                Log.d("RESPUESTA ","respuesta: "+response.message());
                     gruposTotales=response.body();
                     if(gruposTotales!=null)
                     ponerGrupos(gruposTotales);
@@ -146,10 +124,49 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<GrupoList> call, Throwable t) {
-
+                Log.d("RESPUESTA ","error: "+t);
             }
         });
         /*Aquí termina la lógica de Retrofit*/
+
+        //Se comprueba si el miembro pertenece a un grupo, si no pertenece da la opción de unirse.
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+               final Grupo g = (Grupo) adapterView.getItemAtPosition(i);
+                RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+                service.getMiembros(g.getGroupId()).enqueue(new Callback<UsuarioList>() {
+                    @Override
+                    public void onResponse(Call<UsuarioList> call, Response<UsuarioList> response) {
+                        Boolean pertenece=comprobarSiPerteneceAlGrupo(response.body().getUsuarios());
+                        if(pertenece){
+                            Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+                            intent.putExtra("Grupo", g.getGroupId());
+                            startActivityForResult(intent, 0);
+                        }
+                        else{
+                            Intent intent = new Intent(getApplicationContext(), SolicitarPermisoActivity.class);
+                            intent.putExtra("Grupo", g.getGroupId());
+                            intent.putExtra("id", usuario.getUid());
+                            startActivityForResult(intent, 0);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UsuarioList> call, Throwable t) {
+
+                    }
+                });
+
+                //Log.d("ENTROMAIN","TAMAÑO "+g.getMembers().size());
+
+
+
+
+            }
+
+
+        });
 
     }
 
@@ -261,7 +278,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     //este solo recibe una lista
-    public void ponerGrupos(List grupos) {
+    public void ponerGrupos(List <Grupo> grupos) {
         adaptadorGrupo adaptador = new adaptadorGrupo(getApplicationContext(), grupos);
         lv.setAdapter(adaptador);
     }
