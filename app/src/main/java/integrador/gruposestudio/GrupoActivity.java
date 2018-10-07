@@ -32,10 +32,8 @@ public class GrupoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grupo);
-        botonInvitaciones=findViewById(R.id.botonInvitaciones);
         botonChat=findViewById(R.id.botonChat);
         nombreGrupo=findViewById(R.id.nombreGrupo);
-        campoInvitaciones=findViewById(R.id.campoInvitaciones);
 
         //Aquí se recupera el id del grupo que viene desde el MainActivity
         intent=getIntent();
