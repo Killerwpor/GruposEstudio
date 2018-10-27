@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "308259133197-r32ve0phtiottiskp4t7nggic4i1elge.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "integrador.gruposestudio",
+            "certificate_hash": "10c6ea18ab251993fe2c67ed6cffc0aac46d800b"
+          }
+        },
+        {
+          "client_id": "308259133197-q4vbpuri59bidricit01gh8vt7lqlk5v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "integrador.gruposestudio",
+            "certificate_hash": "920ffe139052bc8534e3f558920c3a322b2af662"
+          }
+        },
+        {
           "client_id": "308259133197-l6213jlco5peq8goblivbfi26limqvmk.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308259133197-l6213jlco5peq8goblivbfi26limqvmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

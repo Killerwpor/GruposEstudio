@@ -60,7 +60,7 @@ public class GrupoActivity extends AppCompatActivity {
         });
 
 
-
+/*
 
         botonInvitaciones.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +68,7 @@ public class GrupoActivity extends AppCompatActivity {
 
             }
         });
-
+*/
         botonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
