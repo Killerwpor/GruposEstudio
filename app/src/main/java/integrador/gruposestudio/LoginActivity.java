@@ -78,7 +78,6 @@ public class LoginActivity extends AppCompatActivity {
         botonFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
                 handleFacebookAccessToken(loginResult.getAccessToken());
 
 
@@ -152,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else { //Si NO es satisfactorio el login con Facebook entra por aqui
                             // If sign in fails, display a message to the user.
-                            Log.d("TAG", "signInWithCredential:failure");
+                            Log.d("TAGFACEBOOK", "signInWithCredential:failure "+task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 

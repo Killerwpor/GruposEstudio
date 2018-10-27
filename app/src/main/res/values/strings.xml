@@ -6,7 +6,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="facebook_app_id">486034968549447</string>
-    <string name="fb_login_protocol_scheme">fb486034968549447</string>
+    <string name="facebook_app_id">1904827429598267</string>
+    <string name="fb_login_protocol_scheme">fb1904827429598267</string>
     <string name="title_activity_main">MainActivity</string>
 </resources>
