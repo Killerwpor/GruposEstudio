@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import java.util.List;
 import java.util.Map;
 
+import integrador.gruposestudio.modelo.Evento;
 import integrador.gruposestudio.modelo.Grupo;
 import integrador.gruposestudio.modelo.GrupoList;
 import integrador.gruposestudio.modelo.Solicitud;
@@ -56,6 +57,10 @@ public class RetrofitHelper {
         @Headers("Content-type: application/json")
         @POST("/register_group")
         Call<Grupo> guardarGrupo(@Body Grupo g);
+
+        @Headers("Content-type: application/json")
+        @POST("/register_event")
+        Call<Evento> guardarEvento(@Body Evento e);
 
     @Headers("Content-type: application/json")
     @POST("/register_user")

@@ -16,37 +16,34 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <activity
             android:name=".LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".PerfilActivity" />
-        <activity android:name=".GrupoActivity" >
-
-        </activity>
+        <activity android:name=".GrupoActivity"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".EventosActivity" />
         <activity android:name=".CrearGrupoActivity" />
         <activity android:name=".SolicitudesActivity" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".SolicitarPermisoActivity"
-            android:theme="@android:style/Theme.Dialog">
-        </activity>
+            android:theme="@android:style/Theme.Dialog"></activity>
         <activity
             android:name=".AceptarORechazarActivity"
-            android:theme="@android:style/Theme.Dialog">
-        </activity>
+            android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".CrearEventoActivity"></activity>
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class GrupoActivity extends AppCompatActivity {
     private FloatingActionButton botonInvitaciones;
-    private Button botonChat;
+    private Button botonChat,botonEventos;
     private String idGrupo;
     private Intent intent;
     private int id;
@@ -34,6 +34,9 @@ public class GrupoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_grupo);
         botonChat=findViewById(R.id.botonChat);
         nombreGrupo=findViewById(R.id.nombreGrupo);
+        botonEventos=findViewById(R.id.botonEventos);
+
+
 
         //Aquí se recupera el id del grupo que viene desde el MainActivity
         intent=getIntent();
@@ -60,19 +63,21 @@ public class GrupoActivity extends AppCompatActivity {
         });
 
 
-/*
 
-        botonInvitaciones.setOnClickListener(new View.OnClickListener() {
+        botonEventos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(getApplicationContext(),EventosActivity.class);
+                intent.putExtra("Grupo",id);
+                startActivityForResult(intent,0);
             }
         });
-*/
+
         botonChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent (getApplicationContext(), ChatActivity.class);
+                intent.putExtra("idGrupo",id);
                 startActivityForResult(intent, 0);
             }
         });

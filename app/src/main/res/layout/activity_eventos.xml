@@ -7,12 +7,12 @@
     tools:context=".EventosActivity">
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="400dp"
+        android:id="@+id/nombreGrupo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="16dp"
-        android:text="Reuniones *Nombre Grupo*"
+        android:text="Cargando..."
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,11 +36,11 @@
         android:layout_marginEnd="13dp"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton3"
+        app:layout_constraintEnd_toStartOf="@+id/botonAgregarEvento"
         app:srcCompat="@android:drawable/ic_menu_search" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton3"
+        android:id="@+id/botonAgregarEvento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"

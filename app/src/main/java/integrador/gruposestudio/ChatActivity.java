@@ -1,5 +1,6 @@
 package integrador.gruposestudio;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import integrador.gruposestudio.modelo.Chat;
 import integrador.gruposestudio.adaptadores.adaptadorChat;
@@ -37,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<Chat> chatArray;
     private ListView lv;
     private adaptadorChat adaptador;
+    private int idGrupo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,8 @@ public class ChatActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         usuario = mAuth.getCurrentUser();
         chatArray=new ArrayList<Chat>();
+       Intent intent=getIntent();
+       idGrupo = intent.getIntExtra("idGrupo",-1);
 
 enviar.setOnClickListener(new View.OnClickListener() {
     @Override
@@ -57,16 +64,22 @@ enviar.setOnClickListener(new View.OnClickListener() {
     }
     protected void onStart() {
         super.onStart();
-        myRef = database.getReference();
+       myRef=database.getReference();
+        DatabaseReference myRef2 = database.getReference().child(Integer.toString(idGrupo));
         UserInfo informacionUsuario = usuario;
         String id = informacionUsuario.getUid();
-        Log.d("IDDEUSUARIO", "ID: " + id);
-        myRef.child(id).addValueEventListener(new ValueEventListener() {
+        myRef2.addValueEventListener(new ValueEventListener() { //Si hay cambios en la base de datos se entra aquí
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
-                    Chat chatAux = dataSnapshot.getValue(Chat.class);
-                //og.d("CHAT", "Mensaje: " + chatAux.getMensaje());
+                chatArray.clear(); //se vacia la lista para que cada vez que haya un cambio no se dupliquen los datos
+                for(DataSnapshot item : dataSnapshot.getChildren()) { //se obtienen los hijos de la referencia
+                    Chat data = item.getValue(Chat.class);
+                    chatArray.add(data);
+                }
+                adaptador = new adaptadorChat(getApplicationContext(), chatArray);
+                adaptador.notifyDataSetChanged();
+                lv.setAdapter(adaptador);
+
             }
 
             @Override
@@ -81,17 +94,19 @@ enviar.setOnClickListener(new View.OnClickListener() {
 
 
     private void enviarMensaje() {
-
+        Calendar calendario = new GregorianCalendar();
+        int horas,minutos,milesimas;
+        horas=calendario.get(Calendar.HOUR_OF_DAY);
+        minutos=calendario.get(Calendar.MINUTE);
+        milesimas=calendario.get(Calendar.MILLISECOND);
+        String fecha=Integer.toString(horas)+":"+Integer.toString(minutos);
         myRef = database.getReference();
         UserInfo informacionUsuario = usuario;
         String id = informacionUsuario.getUid();
         String mensajeChat=mensaje.getText().toString();
-        chat=new Chat(mensajeChat,informacionUsuario.getDisplayName()+":","Fecha");
-        chatArray.add(chat);
-        adaptador = new adaptadorChat(getApplicationContext(), chatArray);
-        //Log.d("LISTA", "elementos: "+chatArray.get(0).getAutor());
-       myRef.child(id).setValue(chat);
-        lv.setAdapter(adaptador);
+        chat=new Chat(mensajeChat,informacionUsuario.getDisplayName()+":",fecha);
+       myRef.child(Integer.toString(idGrupo)).child(fecha+":"+milesimas).setValue(chat);
+
     }
 
 
