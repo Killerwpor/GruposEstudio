@@ -111,7 +111,7 @@ public class CrearGrupoActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
                         Log.d("ENTRO,", "usuario " + usuario.getUid() + " grupodid " + gAux.get(k).getGroupId());
-/*
+
                      Solicitud solicitud=new Solicitud(usuario.getUid(),gAux.get(k).getGroupId());
                         service.aceptarSolicitud(solicitud).enqueue(new Callback<Solicitud>() { //Aquí se acepta la solicitud
                             @Override
@@ -124,7 +124,7 @@ public class CrearGrupoActivity extends AppCompatActivity {
 
                             }
                         });
- */
+
                     }
 
                     @Override

@@ -112,13 +112,12 @@ public class MainActivity extends AppCompatActivity
 
         /*Aquí empieza la lógica con Retrofit para traer los grupos*/
         RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
-        Call<GrupoList> call = service.getAllGrupos();
-        call.enqueue(new Callback<GrupoList>() {
+        service.getAllGrupos().enqueue(new Callback<GrupoList>() {
             @Override
             public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
                 Log.d("RESPUESTA ","respuesta: "+response.message());
-                    gruposTotales=response.body();
-                    if(gruposTotales!=null)
+                gruposTotales=response.body();
+                if(gruposTotales!=null)
                     ponerGrupos(gruposTotales);
             }
 
@@ -127,6 +126,8 @@ public class MainActivity extends AppCompatActivity
                 Log.d("RESPUESTA ","error: "+t);
             }
         });
+
+
         /*Aquí termina la lógica de Retrofit*/
 
         //Se comprueba si el miembro pertenece a un grupo, si no pertenece da la opción de unirse.
@@ -157,10 +158,6 @@ public class MainActivity extends AppCompatActivity
 
                     }
                 });
-
-                //Log.d("ENTROMAIN","TAMAÑO "+g.getMembers().size());
-
-
 
 
             }
@@ -240,7 +237,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), EventosActivity.class);
             startActivityForResult(intent, 0);
         } else if (id == R.id.nav_view) {
-            Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MisGruposActivity.class);
             startActivityForResult(intent, 0);
         } else if (id == R.id.nav_manage) {
             FirebaseAuth.getInstance().signOut();

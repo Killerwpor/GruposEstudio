@@ -28,22 +28,23 @@
             </intent-filter>
         </activity>
         <activity android:name=".PerfilActivity" />
-        <activity android:name=".GrupoActivity"></activity>
+        <activity android:name=".GrupoActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".EventosActivity" />
         <activity android:name=".CrearGrupoActivity" />
         <activity android:name=".SolicitudesActivity" />
         <activity android:name=".ChatActivity" />
         <activity
             android:name=".SolicitarPermisoActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".AceptarORechazarActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".CrearEventoActivity"></activity>
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".CrearEventoActivity" />
+        <activity android:name=".MisGruposActivity"></activity>
     </application>
 
 </manifest>
