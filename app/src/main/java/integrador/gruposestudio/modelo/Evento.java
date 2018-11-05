@@ -22,10 +22,11 @@ public class Evento {
     @SerializedName("group_id")
     @Expose
     private int group_id;
+   /*
     @SerializedName("assistants")
     @Expose
     private UsuarioList assistants;
-
+*/
     public Evento(String t, String d, String dat, String p, int g){
 this.title=t;
 this.description=d;
@@ -82,7 +83,7 @@ this.group_id=g;
     public void setGroup_id(int group_id) {
         this.group_id = group_id;
     }
-
+/*
     public UsuarioList getAssistants() {
         return assistants;
     }
@@ -90,4 +91,5 @@ this.group_id=g;
     public void setAssistants(UsuarioList assistants) {
         this.assistants = assistants;
     }
+    */
 }

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,6 +29,7 @@ public class MisGruposActivity extends AppCompatActivity {
 
     private ListView lista;
     private FirebaseUser usuario;
+    private TextView misGruposlabel;
     private FirebaseAuth mAuth;
     private List<Grupo> listaFinal=new ArrayList<>();
     private  RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
@@ -39,6 +41,8 @@ public class MisGruposActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mis_grupos);
 
         lista = findViewById(R.id.listaMisGrupos);
+        misGruposlabel=findViewById(R.id.labelMisGrupos);
+
         mAuth = FirebaseAuth.getInstance();
         usuario = mAuth.getCurrentUser();
 
@@ -71,8 +75,6 @@ public class MisGruposActivity extends AppCompatActivity {
             public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
                 List<Grupo> grupos= recuperarGruposDelUsuario(response.body());
 
-                //ponerGrupos();
-
             }
 
             @Override
@@ -94,7 +96,9 @@ public class MisGruposActivity extends AppCompatActivity {
             service.getMiembros(listaGrupos.get(i).getGroupId()).enqueue(new Callback<UsuarioList>() {
                 @Override
                 public void onResponse(Call<UsuarioList> call, Response<UsuarioList> response) {
-                 if(response.body()!=null)
+                 if(response.body()==null)
+                     misGruposlabel.setText("No esta en ningun grupo");
+                 else
                      comprobarSiPerteneceAlGrupo(response.body().getUsuarios(),aux,l.getGrupos());
 
                 }
@@ -106,7 +110,7 @@ public class MisGruposActivity extends AppCompatActivity {
 
 
         }
-        Log.d("PRUEBA","tamaño: "+listaFinal.size());
+       // Log.d("PRUEBA","tamaño: "+listaFinal.size());
         return listaGruposFinal;
     }
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import integrador.gruposestudio.modelo.Evento;
+import integrador.gruposestudio.modelo.EventosList;
 import integrador.gruposestudio.modelo.Grupo;
 import integrador.gruposestudio.modelo.GrupoList;
 import integrador.gruposestudio.modelo.Solicitud;
@@ -53,6 +54,12 @@ public class RetrofitHelper {
 
         @GET("/users/{user_uid}")
         Call<Usuario> getNombreUsuario(@Path ("user_uid") String idUsuario);
+
+        @GET("/group_events/{id}")
+        Call<EventosList> getEventos(@Path ("id") String id);
+
+        @GET("/events/{id}")
+        Call<Evento> getEvento(@Path ("id") String id);
 
         @Headers("Content-type: application/json")
         @POST("/register_group")

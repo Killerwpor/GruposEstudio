@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import integrador.gruposestudio.Remote.RetrofitHelper;
+import integrador.gruposestudio.adaptadores.adaptadorEvento;
+import integrador.gruposestudio.modelo.Evento;
+import integrador.gruposestudio.modelo.EventosList;
 import integrador.gruposestudio.modelo.Grupo;
 import integrador.gruposestudio.modelo.GrupoList;
 import retrofit2.Call;
@@ -19,67 +25,82 @@ import retrofit2.Response;
 public class EventosActivity extends AppCompatActivity {
 
     private int id;
+    private ListView lista;
     private Grupo grupoPrincipal;
     private FloatingActionButton botonAgregarEvento;
     private TextView nombreGrupo;
+    private RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eventos);
-        nombreGrupo=findViewById(R.id.nombreGrupo);
-        botonAgregarEvento=findViewById(R.id.botonAgregarEvento);
+        nombreGrupo = findViewById(R.id.nombreGrupo);
+        botonAgregarEvento = findViewById(R.id.botonAgregarEvento);
+        lista=findViewById(R.id.listaEventos);
 
 
-       Intent intent=getIntent();
-       id = intent.getIntExtra("Grupo",-1);
-
-       botonAgregarEvento.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               Intent intent=new Intent(getApplicationContext(),CrearEventoActivity.class);
-               intent.putExtra("Grupo",id);
-               startActivity(intent);
-           }
-       });
+        Intent intent = getIntent();
+        id = intent.getIntExtra("Grupo", -1);
 
 
-
-        //Se recuperan los datos del grupo con Retrofit
-        RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
-        service.getAllGrupos().enqueue(new Callback<GrupoList>() {
+        service.getEventos(Integer.toString(id)).enqueue(new Callback<EventosList>() {
             @Override
-            public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
-
-                encontrarGrupo(response.body());
-                organizarUI();
-
-
+            public void onResponse(Call<EventosList> call, Response<EventosList> response) {
+                if(response.body()==null)
+                    nombreGrupo.setText("No hay eventos programados");
+                else
+               organizarLista(response.body().getGrupos());
             }
 
             @Override
-            public void onFailure(Call<GrupoList> call, Throwable t) {
-
+            public void onFailure(Call<EventosList> call, Throwable t) {
+               // Log.d("PRUEBAS","error: "+t);
             }
         });
+
+        botonAgregarEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), CrearEventoActivity.class);
+                intent.putExtra("Grupo", id);
+                startActivity(intent);
+            }
+        });
+
+
+
+/*
+        public void organizarUI () {
+            if (grupoPrincipal != null)
+                nombreGrupo.setText("Eventos del grupo: " + grupoPrincipal.getGroupName());
+        }
+        */
     }
 
-    public void encontrarGrupo(GrupoList g){
-        List<Grupo> grupos=g.getGrupos();
-        for(int i=0;i<grupos.size();i++){
+    void organizarLista(List<Integer> lista){
+      final List<Evento> l=new ArrayList<>();
+        for(int i=0;i<lista.size();i++){
+            service.getEvento(Integer.toString(lista.get(i))).enqueue(new Callback<Evento>() {
+                @Override
+                public void onResponse(Call<Evento> call, Response<Evento> response) {
+                    l.add(response.body());
+                    ponerEventos(l);
 
-            if(grupos.get(i).getGroupId()==id){
+                }
 
-                grupoPrincipal=grupos.get(i);
-
-            }
+                @Override
+                public void onFailure(Call<Evento> call, Throwable t) {
+                    Log.d("PRUEBAS","error "+t);
+                }
+            });
         }
 
     }
 
-    public void organizarUI(){
-        if(grupoPrincipal!=null)
-            nombreGrupo.setText("Eventos del grupo: "+grupoPrincipal.getGroupName());
+    void ponerEventos(List<Evento> l){
+        adaptadorEvento adaptador=new adaptadorEvento(getApplicationContext(),l);
+        lista.setAdapter(adaptador);
     }
 
 }
