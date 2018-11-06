@@ -34,7 +34,7 @@ public class AceptarORechazarActivity extends Activity {
                 service.aceptarSolicitud(s).enqueue(new Callback<Solicitud>() {
                     @Override
                     public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
-                        Log.d("ACEPTARSOL","mensaje "+response.message());
+                        finish();
                     }
 
                     @Override

@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.StringJoiner;
 
 import integrador.gruposestudio.Remote.RetrofitHelper;
+import integrador.gruposestudio.modelo.Evento;
+import integrador.gruposestudio.modelo.EventosList;
 import integrador.gruposestudio.modelo.Grupo;
 import integrador.gruposestudio.modelo.GrupoList;
+import integrador.gruposestudio.modelo.UsuarioList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,7 +29,8 @@ public class GrupoActivity extends AppCompatActivity {
     private Intent intent;
     private int id;
     private Grupo grupoPrincipal;
-    private TextView nombreGrupo,campoInvitaciones;
+    private TextView nombreGrupo,listaUsuarios,titulo,descripcion,fecha;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,10 @@ public class GrupoActivity extends AppCompatActivity {
         botonChat=findViewById(R.id.botonChat);
         nombreGrupo=findViewById(R.id.nombreGrupo);
         botonEventos=findViewById(R.id.botonEventos);
+        listaUsuarios=findViewById(R.id.listaUsuarios);
+        titulo=findViewById(R.id.tituloReunion);
+        descripcion=findViewById(R.id.descripcionReunion);
+        fecha=findViewById(R.id.fechaReunion);
 
 
 
@@ -45,7 +53,7 @@ public class GrupoActivity extends AppCompatActivity {
 
 
         //Se recuperan los datos del grupo con Retrofit
-        RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+        final RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
         service.getAllGrupos().enqueue(new Callback<GrupoList>() {
             @Override
             public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
@@ -62,6 +70,63 @@ public class GrupoActivity extends AppCompatActivity {
             }
         });
 
+        service.getMiembros(id).enqueue(new Callback<UsuarioList>() {
+            @Override
+            public void onResponse(Call<UsuarioList> call, Response<UsuarioList> response) {
+                String usuarios="Integrantes: "+response.body().getUsuarios().get(0).getName();
+                for(int i=1;i<3;i++){
+                  try{
+                      usuarios=usuarios+", "+response.body().getUsuarios().get(i).getName();
+                  }
+                  catch (Exception e){
+
+                  }
+
+                }
+                usuarios=usuarios+"...";
+                listaUsuarios.setText(usuarios);
+            }
+
+            @Override
+            public void onFailure(Call<UsuarioList> call, Throwable t) {
+
+            }
+        });
+
+
+        service.getEventos(Integer.toString(id)).enqueue(new Callback<EventosList>() {
+            @Override
+            public void onResponse(Call<EventosList> call, Response<EventosList> response) {
+                if(response.body()==null){
+                    titulo.setText("No hay eventos");
+                    descripcion.setText("");
+                    fecha.setText("");
+                }
+                else {
+                    int idUltimoEvento = response.body().getGrupos().get(response.body().getGrupos().size() - 1);
+
+
+                    service.getEvento(Integer.toString(idUltimoEvento)).enqueue(new Callback<Evento>() {
+                        @Override
+                        public void onResponse(Call<Evento> call, Response<Evento> response) {
+                            titulo.setText("Último evento creado "+response.body().getTitle());
+                            descripcion.setText("Decripción "+response.body().getDescription());
+                            fecha.setText("Fecha: "+response.body().getDate());
+                        }
+
+                        @Override
+                        public void onFailure(Call<Evento> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventosList> call, Throwable t) {
+
+            }
+        });
 
 
         botonEventos.setOnClickListener(new View.OnClickListener() {

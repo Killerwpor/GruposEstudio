@@ -65,17 +65,12 @@ public class EventosActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), CrearEventoActivity.class);
                 intent.putExtra("Grupo", id);
                 startActivity(intent);
+                finish();
             }
         });
 
 
 
-/*
-        public void organizarUI () {
-            if (grupoPrincipal != null)
-                nombreGrupo.setText("Eventos del grupo: " + grupoPrincipal.getGroupName());
-        }
-        */
     }
 
     void organizarLista(List<Integer> lista){

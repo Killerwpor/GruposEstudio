@@ -168,4 +168,10 @@ service.aceptarSolicitud(s).enqueue(new Callback<Solicitud>() {
 });
 
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 }

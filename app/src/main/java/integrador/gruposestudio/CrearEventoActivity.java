@@ -1,6 +1,8 @@
 package integrador.gruposestudio;
 
 import android.content.Intent;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,7 +55,7 @@ public class CrearEventoActivity extends AppCompatActivity {
                 service.guardarEvento(e).enqueue(new Callback<Evento>() {
                     @Override
                     public void onResponse(Call<Evento> call, Response<Evento> response) {
-                        Log.d("ERRORALGUARDAR","GUARDADO");
+                        Log.d("ERRORALGUARDAR","mensaje: "+response.message());
                         Toast.makeText(getApplicationContext(), "Evento Creado", Toast.LENGTH_LONG).show();
                     }
 
@@ -66,4 +68,12 @@ public class CrearEventoActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+        intent.putExtra("Grupo", id);
+        startActivityForResult(intent, 0);
+    }
+
 }

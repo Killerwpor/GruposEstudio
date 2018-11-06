@@ -96,9 +96,9 @@ public class MisGruposActivity extends AppCompatActivity {
             service.getMiembros(listaGrupos.get(i).getGroupId()).enqueue(new Callback<UsuarioList>() {
                 @Override
                 public void onResponse(Call<UsuarioList> call, Response<UsuarioList> response) {
-                 if(response.body()==null)
+                 if(response.body()==null && aux==0)
                      misGruposlabel.setText("No esta en ningun grupo");
-                 else
+                 else if (response.body()!=null)
                      comprobarSiPerteneceAlGrupo(response.body().getUsuarios(),aux,l.getGrupos());
 
                 }

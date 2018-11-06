@@ -98,16 +98,6 @@
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/editarPerfil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Editar perfil"
-                    android:textAlignment="center"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    android:textColor="@color/com_facebook_blue"
-                    android:textSize="14sp" />
-
             </LinearLayout>
 
         </LinearLayout>

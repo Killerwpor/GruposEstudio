@@ -69,6 +69,9 @@ public class MainActivity extends AppCompatActivity
         mAuth = FirebaseAuth.getInstance();
 
         myRef = database.getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        cuadrarLista();
 
 
 
@@ -110,25 +113,7 @@ public class MainActivity extends AppCompatActivity
     public void onStart() {
         super.onStart();
 
-        /*Aquí empieza la lógica con Retrofit para traer los grupos*/
-        RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
-        service.getAllGrupos().enqueue(new Callback<GrupoList>() {
-            @Override
-            public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
-                Log.d("RESPUESTA ","respuesta: "+response.message());
-                gruposTotales=response.body();
-                if(gruposTotales!=null)
-                    ponerGrupos(gruposTotales);
-            }
 
-            @Override
-            public void onFailure(Call<GrupoList> call, Throwable t) {
-                Log.d("RESPUESTA ","error: "+t);
-            }
-        });
-
-
-        /*Aquí termina la lógica de Retrofit*/
 
         //Se comprueba si el miembro pertenece a un grupo, si no pertenece da la opción de unirse.
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -298,6 +283,29 @@ return lista;
                 return true;
         }
         return false;
+    }
+
+    void cuadrarLista(){
+        /*Aquí empieza la lógica con Retrofit para traer los grupos*/
+        RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+        service.getAllGrupos().enqueue(new Callback<GrupoList>() {
+            @Override
+            public void onResponse(Call<GrupoList> call, Response<GrupoList> response) {
+                Log.d("RESPUESTA ","respuesta: "+response.message());
+                gruposTotales=response.body();
+                if(gruposTotales!=null)
+                    ponerGrupos(gruposTotales);
+            }
+
+            @Override
+            public void onFailure(Call<GrupoList> call, Throwable t) {
+                Log.d("RESPUESTA ","error: "+t);
+                cuadrarLista(); //machetazo para que aparezcan los grupos siempre
+            }
+        });
+
+
+        /*Aquí termina la lógica de Retrofit*/
     }
 
 
