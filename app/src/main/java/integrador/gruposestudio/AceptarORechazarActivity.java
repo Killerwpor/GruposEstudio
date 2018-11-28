@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import integrador.gruposestudio.Remote.RetrofitHelper;
 import integrador.gruposestudio.modelo.Solicitud;
@@ -34,6 +35,26 @@ public class AceptarORechazarActivity extends Activity {
                 service.aceptarSolicitud(s).enqueue(new Callback<Solicitud>() {
                     @Override
                     public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                        Toast.makeText(getApplicationContext(), "Solicitud aceptada", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Solicitud> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+        rechazar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
+                service.rechazarSolicitud(uID,grupoId).enqueue(new Callback<Solicitud>() {
+                    @Override
+                    public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {
+                        Toast.makeText(getApplicationContext(), "Solicitud rechazada", Toast.LENGTH_LONG).show();
                         finish();
                     }
 

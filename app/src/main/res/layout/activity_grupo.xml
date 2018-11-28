@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Próxima reunión: Taller II"
+                android:text="Cargando..."
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
@@ -79,7 +79,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="Martes 23 de Febrero" />
+                    android:text="cargando..." />
             </LinearLayout>
 
             <LinearLayout
@@ -93,7 +93,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
-                    android:text="Estudiar los temas del 2do parcial" />
+                    android:text="cargando..." />
 
             </LinearLayout>
 

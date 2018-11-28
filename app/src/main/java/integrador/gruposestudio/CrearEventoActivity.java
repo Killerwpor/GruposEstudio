@@ -57,6 +57,10 @@ public class CrearEventoActivity extends AppCompatActivity {
                     public void onResponse(Call<Evento> call, Response<Evento> response) {
                         Log.d("ERRORALGUARDAR","mensaje: "+response.message());
                         Toast.makeText(getApplicationContext(), "Evento Creado", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
+                        intent.putExtra("Grupo", id);
+                        startActivityForResult(intent, 0);
+                        finish();
                     }
 
                     @Override

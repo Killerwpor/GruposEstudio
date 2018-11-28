@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -80,6 +81,10 @@ public class RetrofitHelper {
         @Headers("Content-type: application/json")
         @POST("/group_users")
         Call<Solicitud> aceptarSolicitud(@Body  Solicitud s);
+
+        @Headers("Content-type: application/json")
+        @DELETE("/group_requests/{group_id}/{user_uid}")
+        Call<Solicitud> rechazarSolicitud(@Path("user_uid") String id, @Path("group_id") int idGrupo);
 
 
 
