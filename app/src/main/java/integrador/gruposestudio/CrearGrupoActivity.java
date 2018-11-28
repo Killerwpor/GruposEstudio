@@ -141,7 +141,7 @@ public class CrearGrupoActivity extends AppCompatActivity {
     public void meterAlAdministrador2(List<Grupo> g) {
      RetrofitHelper.GetDataService service = RetrofitHelper.getRetrofitInstance().create(RetrofitHelper.GetDataService.class);
        int numero=g.get(g.size()-1).getGroupId();
-        Log.d("RESPUESTASOLICITUD","numero: "+numero);
+        Log.d("Grupo","numero: "+g.get(g.size()-1).getGroupName());
          service.enviarSolicitud(usuario.getUid(),numero).enqueue(new Callback<Solicitud>() {
              @Override
              public void onResponse(Call<Solicitud> call, Response<Solicitud> response) {

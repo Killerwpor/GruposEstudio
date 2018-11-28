@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity
                 service.getMiembros(g.getGroupId()).enqueue(new Callback<UsuarioList>() {
                     @Override
                     public void onResponse(Call<UsuarioList> call, Response<UsuarioList> response) {
+                        if(response.body()!=null){
                         Boolean pertenece=comprobarSiPerteneceAlGrupo(response.body().getUsuarios());
                         if(pertenece){
                             Intent intent = new Intent(getApplicationContext(), GrupoActivity.class);
@@ -137,7 +138,7 @@ public class MainActivity extends AppCompatActivity
                             startActivityForResult(intent, 0);
                         }
                     }
-
+                    }
                     @Override
                     public void onFailure(Call<UsuarioList> call, Throwable t) {
 
